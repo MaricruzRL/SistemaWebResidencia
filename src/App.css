@@ -776,8 +776,14 @@
       cursor: pointer;
       color:black;
     }
+    .informacion__tabla button{
+      background-color: #1a3968;
+      border-radius: 0.9vw;
+      cursor: pointer;
+      color: white;
+      margin: 0.5vw 0.5vw 0.5vw 0.5vw;
+    }
 
-
-
- 
-
+ .btnn{
+  background-color: #1a3968;
+ }
