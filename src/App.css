@@ -784,6 +784,27 @@
       margin: 0.5vw 0.5vw 0.5vw 0.5vw;
     }
 
- .btnn{
-  background-color: #1a3968;
- }
+ .informacion__tabla .btnsubir{
+  display:inline-block; 
+  /*flex-direction: row;*/
+  font-size: 1vw;
+  margin: 0.2vw 0.2vw 0.2vw 0.2vw;
+  border-radius: 0.5vw;
+  padding: 0.2vw;
+}
+
+.observaciones textarea{
+  border-radius: 0.5vw;
+  border: solid black;
+}
+
+.informacion__tabla .btnrec{
+  display:inline-block; 
+  /*flex-direction: row;*/
+  font-size: 1vw;
+  margin: 0.2vw 0.2vw 0.2vw 0.2vw;
+  border-radius: 0.5vw;
+  padding: 0.2vw;
+  align-content: center;
+  
+}

@@ -11,6 +11,10 @@ import axios from "axios";
 
 function App() {
   const [data, setData] = useState(null);
+//PARA VISUALISAR ESPECIALIDEDEDES
+const [especialidades, setEspecialidades] = useState(null);
+//PARA VISUALISAR ESPECIALIDEDEDES
+const [asesores, setAsesores] = useState(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
@@ -26,6 +30,7 @@ function App() {
     periodo: "",
     empresa: "",
     asesorE: "",
+    carrera: "",
   });
 
   ///api/residentesuploads
@@ -33,7 +38,8 @@ function App() {
   const nombretabla = "api/residentesuploads";
   const nombredocumentos = "api/upload/files/";
   //#####################################
-
+  const nombreespecialidades = 'api/especialidads'
+  const nombreasesores = 'api/asesores-is'
   //pruebas de importacion
   const contenidodocumento = "api/upload";
   //
@@ -60,6 +66,37 @@ function App() {
     fetchDataAsync();
   }, []);
 
+   //####################################### ESPECIALIDADES
+
+   useEffect(() => {
+    // Cargar los datos iniciales al montar el componente
+    async function fetchDataAsync() {
+      try {
+        const especialidades = await fetchData(nombreespecialidades);
+        setEspecialidades(especialidades);
+        console.log("Cargaron Las Especialidades !", especialidades);
+      } catch (error) {
+        console.error("Error al Cargar las Especialidades", error);
+      }
+    }
+    fetchDataAsync();
+  }, []);
+    //####################################### ASESORES
+
+    useEffect(() => {
+      // Cargar los datos iniciales al montar el componente
+      async function fetchDataAsync() {
+        try {
+          const asesores = await fetchData(nombreasesores);
+          setAsesores(asesores);
+          console.log("Cargaron Los Asesores !", asesores);
+        } catch (error) {
+          console.error("Error al Cargar los Asesores", error);
+        }
+      }
+      fetchDataAsync();
+    }, []);
+//#############################
   useEffect(() => {
     // Realiza una solicitud GET a la API de Strapi para obtener la lista de documentos
     async function fetchDocuments() {
@@ -141,6 +178,7 @@ function App() {
         periodo: "",
         empresa: "",
         asesorE: "",
+        carrera: "",
       });
     } catch (error) {
       console.error("Error al crear el elemento:", error);
@@ -159,6 +197,7 @@ function App() {
         periodo: itemToEdit.attributes.periodo,
         empresa: itemToEdit.attributes.empresa,
         asesorE: itemToEdit.attributes.asesorE,
+         carrera: itemToEdit.attributes.carrera,
       });
     }
   };
@@ -178,6 +217,7 @@ function App() {
           periodo: "",
           empresa: "",
           asesorE: "",
+          carrera: "",
         });
         setEditingId(null);
       }
@@ -296,7 +336,7 @@ function App() {
             <input
               type="text"
               placeholder="Nombre"
-              value={newItem.title}
+              value={newItem.nombre}
               onChange={(e) =>
                 setNewItem({ ...newItem, nombre: e.target.value })
               }
@@ -305,7 +345,7 @@ function App() {
             <input
               type="text"
               placeholder="Numero de control"
-              value={newItem.descrpcion}
+              value={newItem.ncontrol}
               onChange={(e) =>
                 setNewItem({ ...newItem, ncontrol: e.target.value })
               }
@@ -313,8 +353,8 @@ function App() {
             <span>Nombre del Anteproyecto:</span>
             <input
               type="text"
-              placeholder="nombre_anteproyecto"
-              value={newItem.title}
+              placeholder="Nombre AnteProyecto"
+              value={newItem.nombre_anteproyecto}
               onChange={(e) =>
                 setNewItem({ ...newItem, nombre_anteproyecto: e.target.value })
               }
@@ -325,7 +365,7 @@ function App() {
             <input
               type="text"
               placeholder="periodo"
-              value={newItem.descrpcion}
+              value={newItem.periodo}
               onChange={(e) =>
                 setNewItem({ ...newItem, periodo: e.target.value })
               }
@@ -334,20 +374,40 @@ function App() {
             <input
               type="text"
               placeholder="empresa"
-              value={newItem.title}
+              value={newItem.empresa}
               onChange={(e) =>
                 setNewItem({ ...newItem, empresa: e.target.value })
               }
             />
-            <span>Asesor Externo:</span>
-            <input
-              type="text"
-              placeholder="Asesor externo"
-              value={newItem.descrpcion}
-              onChange={(e) =>
-                setNewItem({ ...newItem, asesorE: e.target.value })
-              }
-            />
+     <span>Asesor:</span>
+     <select
+        value={newItem.asesorE}
+        onChange={(e) =>
+          setNewItem({ ...newItem, asesorE: e.target.value })
+        }
+      >
+        <option value="">Selecciona un Asesor</option>
+        {asesores && asesores.data.map((asesor) => (
+          <option key={asesor.id} value={asesor.attributes.nombre}>
+            {asesor.attributes.nombre}
+          </option>
+        ))}
+      </select>
+
+     <span>Carrera:</span>
+     <select
+        value={newItem.carrera}
+        onChange={(e) =>
+          setNewItem({ ...newItem, carrera: e.target.value })
+        }
+      >
+        <option value="">Selecciona una carrera</option>
+        {especialidades && especialidades.data.map((especialidad) => (
+          <option key={especialidad.id} value={especialidad.attributes.nombre}>
+            {especialidad.attributes.nombre}
+          </option>
+        ))}
+      </select>
           </div>
         </div>
         <div className="subiranteproyecto__upload">
@@ -374,6 +434,7 @@ function App() {
                 <th>Nombre de Anteproyecto</th>
                 <th>Nombre de documento</th>
                 <th>Esatado</th>
+                <th>Carrera</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -386,18 +447,12 @@ function App() {
                     <td>{item.attributes.nombre_anteproyecto}</td>
                     <td>{item.attributes.namedoc}</td>
                     <td>{item.attributes.estado}</td>
+                    <td>{item.attributes.carrera}</td>
                     <td>
-                      <button onClick={() => handleEdit(item.id)}>
-                        Editar Informacion
+                      <button className="btnsubir" onClick={() => handleEdit(item.id)}>
+                        Editar Información
                       </button>
-                      <button
-                        onClick={() =>
-                          handleDelete(item.id, item.attributes.iddocumento)
-                        }
-                      >
-                        Eliminar
-                      </button>
-                      <button
+                      <button   className="btnsubir"
                         onClick={() =>
                           handleEditDocument(
                             item.id,
@@ -405,15 +460,17 @@ function App() {
                           )
                         }
                       >
-                        Editar Documento
+                        Editar Doc
                       </button>
-                      <button
+                      <button   className="btnsubir"
                         onClick={() =>
-                          pruebas(item.id)
+                          handleDelete(item.id, item.attributes.iddocumento)
                         }
                       >
-                        CONSOLA
+                        Eliminar
                       </button>
+                      
+                    
                       
                     </td>
                   </tr>
@@ -432,6 +489,7 @@ function App() {
                   </tr>
                 ))}
         </div>
+    
       </div>
     </div>
   );

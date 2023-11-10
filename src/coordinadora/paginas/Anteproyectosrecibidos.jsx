@@ -245,7 +245,8 @@ function Anteproyectosrecibidos() {
       <th>Periodo</th>
       <th>Empresa</th>
       <th>AsesorE</th>
-      <th>Doc Name desde Upload</th>
+      <th>Nombre Documento</th>
+      <th>Carrera</th>
       <th>Estado</th>
       <th>Observaciones</th>
       <th>Acciones</th>
@@ -278,7 +279,7 @@ function Anteproyectosrecibidos() {
               ))}
           </td>
 
-
+          <td>{item.attributes.carrera}</td>
           <td>{item.attributes.estado}</td>
           <td><div className="observaciones">
          
@@ -309,10 +310,10 @@ function Anteproyectosrecibidos() {
               )
               .map((document) => (
                 <div key={document.id}>
-            <button onClick={() => pruebas( document.url)}>ver documento</button> 
-             <button onClick={() => Aceptado(item.id,texto)}>Aceptar</button>
-            <button onClick={() => Rechazado(item.id,texto)}>Rechazar</button>
-            <button onClick={() => corregir(item.id,texto)}>Corregir</button>
+            <button className="btnrec" onClick={() => pruebas( document.url)}>ver documento</button> 
+             <button className="btnrec" onClick={() => Aceptado(item.id,texto)}>Aceptar</button>
+            <button className="btnrec" onClick={() => Rechazado(item.id,texto)}>Rechazar</button>
+            <button className="btnrec" onClick={() => corregir(item.id,texto)}>Corregir</button>
       
 
           

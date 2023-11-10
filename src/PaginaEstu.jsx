@@ -1,22 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 /*Componentes*/
-import Barra from "./coordinadora/componentes/menu_lateral.jsx";
+import Barra from "./estudiante/componentes/menu_lateral.jsx";
 import Cabecera from "./componentes/cabecera.jsx";
 import Pie from "./componentes/pie_de_pagina.jsx";
 /* Paginas */
-import Inicio from "./coordinadora/paginas/inicio.jsx";
-import Anteproyectosrecibidos from "./coordinadora/paginas/Anteproyectosrecibidos.jsx";
+import Inicio from "./estudiante/paginas/inicio.jsx";
+import Anteproyectosubir from "./estudiante/paginas/anteproyectosubir.js";
 
-
-
-/*Estilos*/
-import './App.css';
-
-const App = () => {
-  return (
-    <BrowserRouter>
-      <div className="contenedor">
+const PaginaEstu = ({ children }) => {
+   
+    
+    return (
+        <div className="contenedor">
         <Barra />
         <div className="principal">
           <header className="cabecera">
@@ -26,7 +22,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Inicio />} />
               <Route path="/inicio" element={<Inicio />} />
-              <Route path="/Anteproyectosrecibidos" element={<Anteproyectosrecibidos />} />
+              <Route path="/anteproyectosubir" element={<Anteproyectosubir />} />
+
             </Routes>
           </main>
           <footer className="pie-pagina">
@@ -34,9 +31,7 @@ const App = () => {
           </footer>
         </div>
       </div>
-    </BrowserRouter>
-  );
+    );
 };
 
-export default App;
-
+export default PaginaEstu;
